@@ -1,0 +1,77 @@
+{
+    "operationName": "listingScreen",
+    "query": "query listingScreen($after: ID, $experiments: [Experiment!], $filters: [AdvertSearchFilterInput!], $includePromotedAds: Boolean!, $includeRatings: Boolean!, $includeFiltersCounters: Boolean!, $includeSortOptions: Boolean!, $includeSuggestedFilters: Boolean!, $itemsPerPage: Int, $page: Int, $parameters: [String!], $searchTerms: [String!], $sortBy: String, $maxAge: Int, $includeCepik: Boolean!, $includeNewPromotedAds: Boolean!, $promotedInput: AdSearchInput!) {\n  advertSearch(\n    criteria: {searchTerms: $searchTerms, filters: $filters}\n    sortBy: $sortBy\n    page: $page\n    after: $after\n    itemsPerPage: $itemsPerPage\n    maxAge: $maxAge\n    experiments: $experiments\n  ) {\n    ...advertSearchFields\n    edges {\n      node {\n        ...lazyAdvertFields\n              }\n          }\n    sortOptions @include(if: $includeSortOptions) {\n      searchKey\n      label\n          }\n      }\n  ...promotedAds @include(if: $includeNewPromotedAds)\n  ...suggestedFilters @include(if: $includeSuggestedFilters)\n}\nfragment advertSearchFields on AdvertSearchOutput {\n  url\n  sortedBy\n  locationCriteriaChanged\n  subscriptionKey\n  totalCount\n  filtersCounters @include(if: $includeFiltersCounters) {\n    name\n    nodes {\n      name\n      value\n          }\n      }\n  appliedLocation {\n    city {\n      name\n      id\n      canonical\n          }\n    subregion {\n      name\n      id\n      canonical\n          }\n    region {\n      name\n      id\n      canonical\n          }\n    latitude\n    longitude\n    mapConfiguration {\n      zoom\n          }\n      }\n  pageInfo {\n    pageSize\n    currentOffset\n      }\n  latestAdId\n  edges {\n    ...listingAdCardFields\n      }\n  topads @include(if: $includePromotedAds) {\n    ...listingAdCardFields\n      }\n  }\nfragment listingAdCardFields on AdvertEdge {\n node {\n    ...advertFields\n      }\n  }\nfragment advertFields on Advert {\n  id\n  title\n  createdAt\n  shortDescription\n  url\n price {\n    amount {\n      units\n      nanos\n      value\n      currencyCode\n          }\n    badges\n    grossPrice {\n      value\n      currencyCode\n          }\n    netPrice {\n      value\n      currencyCode\n          }\n      }\n  parameters(keys: $parameters) {\n    key\n    displayValue\n    label\n    value\n      }\n  }\nfragment lazyAdvertFields on Advert {\n  id\n  cepikVerified @include(if: $includeCepik)\n  sellerRatings(scope: PROFESSIONAL) @include(if: $includeRatings) {\n    statistics {\n      recommend {\n        value\n        suffix\n              }\n      avgRating {\n        value\n              }\n      total {\n        suffix\n        value\n              }\n      detailedRating {\n        label\n        value\n              }\n          }\n      }\n  }fragment promotedAds on Query {\n  promoted: adSearch {\n    search(input: $promotedInput) {\n      ... on AdSearchOutput {\n        ads {\n          ...adFields\n                  }\n              }\n      ... on AdSearchError {\n        message\n              }\n          }\n      }\n  }\nfragment adFields on Ad {\n  id\n  url\n  title\n  location {\n    cityName\n    regionName\n      }\n  description\n  badges\n  createdAt\n  updatedAt\n  photos\n  price {\n    currencyCode\n    ... on AdNetGrossPrice {\n      currencyCode\n      netMinorAmount\n      grossMinorAmount\n      isNet\n          }\n      }\n  attributes {\n    key\n    value\n    valueLabel\n    valueSuffix\n      }\n  valueAddedServices {\n    name\n    validity\n    appliedAt\n      }\n  brandProgram {\n    ... on BrandProgram {\n      logo {\n        url\n              }\n      name\n      url\n      id\n          }\n      }\n  seller {\n    ... on ProfessionalSeller {\n      name\n      uuid\n      dealerAdsUrl\n      logo {\n        url\n              }\n      serviceOptions {\n        label\n        code\n        url\n              }\n      benefits(codes: [DEALER_IDENTITY_ELEMENTS])\n      ratings {\n        statistics {\n          recommend {\n            value\n                      }\n          avgRating {\n            value\n                      }\n                  }\n              }\n          }\n    ... on PrivateSeller {\n      name\n      uuid\n          }\n      }\n  }\nfragment suggestedFilters on Query {\n  suggestedFilters(criteria: {searchTerms: $searchTerms, filters: $filters}) {\n    key\n    name\n    values {\n      value\n      appliedFilters {\n        name\n        value\n              }\n          }\n      }\n  }",
+    "variables": {
+        "after":null,
+        "click2BuyExperimentId": "",
+        "click2BuyExperimentVariant": "",
+        "experiments": [
+            {
+                "key": "MCTA-1463",
+                "variant": "a"
+            },
+            {
+                "key": "MCTA-1660",
+                "variant": "a"
+            },
+            {
+                "key": "MCTA-1661",
+                "variant": "a"
+            },
+            {
+                "key": "MCTA-1704",
+                "variant": "a"
+            }
+        ],
+        "filters": [
+            {
+                "name": "filter_enum_make",
+                "value": "mazda"
+            },
+            {
+                "name": "filter_enum_model",
+                "value": "6"
+            },
+            {
+                "name": "filter_enum_generation",
+                "value": "gen-iii-2012-6"
+            },
+            {
+                "name": "filter_enum_fuel_type",
+                "value": "petrol"
+            },
+            {
+                "name": "category_id",
+                "value": "29"
+            }
+        ],
+        "includeCepik":false,
+        "includeClick2Buy":false,
+        "includeFiltersCounters":false,
+        "includeNewPromotedAds":false,
+        "includePriceEvaluation":true,
+        "includePromotedAds":false,
+        "includeRatings":false,
+        "includeSortOptions":false,
+        "includeSuggestedFilters":false,
+        "maxAge": 60,
+        "page": 1,
+        "parameters": [
+            "make",
+            "offer_type",
+            "fuel_type",
+            "gearbox",
+            "country_origin",
+            "mileage",
+            "engine_capacity",
+            "engine_code",
+            "engine_power",
+            "first_registration_year",
+            "model",
+            "version",
+            "year"
+        ],
+        "promotedInput": {},
+        "searchTerms":null
+    }
+}
