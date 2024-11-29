@@ -7,6 +7,7 @@ Firebase: python -m pip install --upgrade firebase-admin
 
 import requests
 import json
+import os
 from datetime import datetime
 
 from local_storage import LocalStorage
@@ -33,6 +34,7 @@ class OtomotoScrap:
 
     def scrap(self):
         print("Start")
+        self.__increaseCounter()
 
         with open(self.__request, "r") as file:
             requestData = json.load(file)
@@ -89,5 +91,19 @@ class OtomotoScrap:
 
     def __readParameter(self, parameters, key):
         return next((param["value"] for param in parameters if param["key"] == key), None)
+
+    def __increaseCounter(self):
+        file_path = "/home/darek/counter.txt"
+        if os.path.exists(file_path):
+            with open(file_path, "r") as file:
+                try:
+                    counter = int(file.read().strip())
+                except ValueError:
+                    counter = 0
+        else:
+            counter = 0
+        counter += 1
+        with open(file_path, "w") as file:
+            file.write(str(counter))
 
 OtomotoScrap().scrap()
